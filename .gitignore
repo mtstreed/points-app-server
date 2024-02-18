@@ -1,0 +1,8 @@
+# dependencies
+/node_modules
+
+# compiled js from ts
+/dist
+
+# environment variables
+.env
