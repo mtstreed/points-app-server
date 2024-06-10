@@ -13,15 +13,25 @@ export async function getAllUsers(req: Request, res: Response): Promise<void> {
 
 
 export async function getUserById(req: Request, res: Response): Promise<void> {
-    res.send('getUserById called');
+    try {
+        const userId = req.params.id;
+        const user: IUser | null = await User.findById(userId);
+        if (user) {
+            res.json(user);
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
 }
 
 
 export async function updateUser(req: Request, res: Response): Promise<void> {
     try {
         const reqBody = req.body;
+        
         const updatedUser: IUser = reqBody as IUser;
-
         const dbUser = await User.findById(updatedUser._id);
         if (dbUser) {
             dbUser.points = updatedUser.points;
@@ -32,8 +42,9 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
             res.status(404).json({ message: 'User not found' });
         }
 
+        // Code to bulk update users or create a user if not found.
         // const updatedUsers: IUser[] = reqBody as IUser[];
-
+        // // TODO this could be more efficient; not every user may need their points or rank updated.
         // const userPromises = updatedUsers.map(async (user) => {
         //     const dbUser: IUser | null = await User.findById(user._id);
         //     if (dbUser) {
@@ -41,7 +52,8 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
         //         dbUser.rank = user.rank;
         //         return dbUser.save();
         //     } else {
-        //         return;
+        //         const newUser = new User(user);
+        //         return newUser.save();
         //     }
         // });
         // const savedUsers = await Promise.all(userPromises);
