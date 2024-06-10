@@ -15,7 +15,7 @@ export async function getAllUsers(req: Request, res: Response): Promise<void> {
 export async function getUserById(req: Request, res: Response): Promise<void> {
     try {
         const userId = req.params.id;
-        const user: IUser | null = await User.findById(userId);
+        const user = await User.findOne({ auth0Id: userId });
         if (user) {
             res.json(user);
         } else {
@@ -67,14 +67,11 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
 export async function createUser(req: Request, res: Response): Promise<void> {
     try {
         const reqBody = req.body;
-        const usersInfo: IUser[] = reqBody as IUser[];
-        const userPromises = usersInfo.map(async (user) => {
-            const newUser = new User(user);
-            return newUser.save();
-        });
-        const savedUsers = await Promise.all(userPromises);
-        res.json(savedUsers);
-        console.log('Users created: ' + JSON.stringify(savedUsers));
+        const userInfo: IUser = reqBody as IUser;
+        const newUser = new User(userInfo);
+        const savedUser = await newUser.save();
+        res.json(savedUser);
+        console.log('User created: ' + JSON.stringify(savedUser));
     } catch (error) {
         res.status(500).json({ message: 'Error creating User: ' + JSON.stringify(error) });
     }
