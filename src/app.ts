@@ -12,7 +12,6 @@ const port = process.env.PORT || 3030;
 // app.use(cors());
 app.use(express.json());
 
-// TODO put this in an env variable
 const mongoUri: string = process.env.MONGO_URI as string;
 mongoose.connect(mongoUri, {dbName: 'testDb'})
     .then(() => {
