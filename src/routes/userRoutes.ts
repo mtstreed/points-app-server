@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', getAllUsers);
 router.get('/:id', getUserById);
-router.post('/:id', updateUser);
 router.post('/', createUser);
+router.post('/:id', updateUser);
 
 export default router;
