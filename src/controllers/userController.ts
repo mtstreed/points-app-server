@@ -27,12 +27,14 @@ export async function getUserById(req: Request, res: Response): Promise<void> {
 }
 
 
+// TODO update all user fields?
 export async function updateUser(req: Request, res: Response): Promise<void> {
     try {
+        const userId = req.params.id;
         const reqBody = req.body;
         
         const updatedUser: IUser = reqBody as IUser;
-        const dbUser = await User.findById(updatedUser._id);
+        const dbUser = await User.findOne({ auth0Id: userId });
         if (dbUser) {
             dbUser.points = updatedUser.points;
             dbUser.rank = updatedUser.rank;
