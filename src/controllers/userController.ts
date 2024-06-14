@@ -43,23 +43,6 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
         } else {
             res.status(404).json({ message: 'User not found' });
         }
-
-        // Code to bulk update users or create a user if not found.
-        // const updatedUsers: IUser[] = reqBody as IUser[];
-        // // TODO this could be more efficient; not every user may need their points or rank updated.
-        // const userPromises = updatedUsers.map(async (user) => {
-        //     const dbUser: IUser | null = await User.findById(user._id);
-        //     if (dbUser) {
-        //         dbUser.points = user.points;
-        //         dbUser.rank = user.rank;
-        //         return dbUser.save();
-        //     } else {
-        //         const newUser = new User(user);
-        //         return newUser.save();
-        //     }
-        // });
-        // const savedUsers = await Promise.all(userPromises);
-        // res.json(savedUsers);
     } catch (error) {
         res.status(500).json({ message: 'Error updating Users: ' + JSON.stringify(error) });
     }
