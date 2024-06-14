@@ -12,7 +12,7 @@ export interface IUser extends Document {
 const userSchema: Schema = new Schema({
     name: { type: String, required: true }, 
     points: { type: Number, required: true },
-    rank: { type: Number, required: true },
+    rank: { type: Number, required: false },
     email: { type: String, required: true },
     auth0Id: { type: String, required: true },
 });
